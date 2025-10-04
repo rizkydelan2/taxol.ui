@@ -11,6 +11,47 @@
       background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
       min-height: 100vh; display: flex; align-items:center; justify-content:center; padding:20px;
     }
+   /* 🌟 SPLASH SCREEN (ANIMASI AWAL) */
+#splash {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: white;
+  font-size: 2em;
+  z-index: 9999;
+  animation: fadeOut 2s ease-in-out forwards;
+  animation-delay: 1.8s;
+}
+#splash .logo {
+  font-size: 3em;
+  animation: bounceIn 1s ease-out;
+}
+@keyframes bounceIn {
+  0% {transform: scale(0.3); opacity: 0;}
+  50% {transform: scale(1.1); opacity: 1;}
+  70% {transform: scale(0.9);}
+  100% {transform: scale(1);}
+}
+@keyframes fadeOut {
+  to {opacity: 0; visibility: hidden;}
+}
+
+/* 🌟 efek muncul halaman utama */
+.container {
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.container.show {
+  opacity: 1;
+}
+
+.container.show { opacity: 1; }
+
     .container {
       background:white; border-radius:30px; box-shadow:0 20px 60px rgba(0,0,0,0.3);
       max-width:450px; width:100%; overflow:hidden; animation:slideUp 0.5s ease-out;
@@ -70,6 +111,17 @@
   </style>
 </head>
 <body>
+    <body>
+ <!-- 🌟 ANIMASI PEMBUKA -->
+<div id="splash">
+  <div class="logo">🚕 TAXOL</div>
+  <p>Taxi Online Indonesia</p>
+</div>
+
+
+  <!-- 🌟 HALAMAN UTAMA -->
+
+
   <div class="container">
     <div class="header">
       <div class="logo">🚕 FAKE TAXI</div>
@@ -296,21 +348,42 @@ currentRide = { name, pickup, destination, driver, price: document.getElementByI
     }
 
     function printReceipt() {
-      const { name, pickup, destination, driver, price, date } = currentRide;
-      const receipt = `
-        <h2>🧾 Struk Perjalanan</h2>
-        <p><strong>Nama:</strong> ${name}</p>
-        <p><strong>Driver:</strong> ${driver.name} (${driver.vehicle} - ${driver.plate})</p>
-        <p><strong>Dari:</strong> ${pickup}</p>
-        <p><strong>Ke:</strong> ${destination}</p>
-        <p><strong>Total:</strong> ${price}</p>
-        <p><strong>Tanggal:</strong> ${date}</p>
-        <p>Terima kasih telah menggunakan Taxol 🚕</p>
-      `;
-      const w = window.open('', '_blank');
-      w.document.write(receipt);
-      w.print();
-    }
+  const { name, pickup, destination, driver, price, date } = currentRide;
+
+  // Buat elemen struk sementara
+  const receiptContainer = document.createElement("div");
+  receiptContainer.id = "receipt";
+  receiptContainer.style.width = "350px";
+  receiptContainer.style.padding = "20px";
+  receiptContainer.style.background = "white";
+  receiptContainer.style.borderRadius = "15px";
+  receiptContainer.style.fontFamily = "'Segoe UI', sans-serif";
+  receiptContainer.style.boxShadow = "0 0 10px rgba(0,0,0,0.2)";
+  receiptContainer.innerHTML = `
+    <h2 style="text-align:center;color:#667eea;">🧾 Struk Perjalanan</h2>
+    <hr style="margin:10px 0;">
+    <p><strong>Nama:</strong> ${name}</p>
+    <p><strong>Driver:</strong> ${driver.name} (${driver.vehicle} - ${driver.plate})</p>
+    <p><strong>Dari:</strong> ${pickup}</p>
+    <p><strong>Ke:</strong> ${destination}</p>
+    <p><strong>Total:</strong> ${price}</p>
+    <p><strong>Tanggal:</strong> ${date}</p>
+    <hr style="margin:10px 0;">
+    <p style="text-align:center;color:#555;">Terima kasih telah menggunakan <strong>Taxol 🚕</strong></p>
+  `;
+  document.body.appendChild(receiptContainer);
+
+  // Ubah elemen jadi gambar JPG & otomatis unduh
+  html2canvas(receiptContainer, { scale: 2 }).then(canvas => {
+    const imageData = canvas.toDataURL("image/jpeg", 1.0);
+    const link = document.createElement("a");
+    link.href = imageData;
+    link.download = "Struk_Taxol.jpg";
+    link.click();
+    receiptContainer.remove(); // hapus elemen sementara
+  });
+}
+
 
     function updateHistoryList() {
       const historyList = document.getElementById('historyList');
@@ -363,6 +436,24 @@ currentRide = { name, pickup, destination, driver, price: document.getElementByI
 
     updatePrice();
     updateHistoryList();
+   // 🌟 Efek splash screen 2 detik (FIX)
+window.addEventListener('load', () => {
+  const splash = document.getElementById('splash');
+  const container = document.querySelector('.container');
+
+  // Pastikan container langsung visible dari awal (tapi disembunyikan oleh splash)
+  container.style.opacity = '0';
+  container.style.transition = 'opacity 0.8s ease';
+
+  setTimeout(() => {
+    splash.style.display = 'none'; // sembunyikan splash
+    container.style.opacity = '1'; // tampilkan halaman utama
+  }, 2000);
+});
+
+
+
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 </body>
 </html>
