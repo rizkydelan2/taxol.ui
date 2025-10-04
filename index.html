@@ -225,7 +225,9 @@
           <div class="price-amount" id="finalPrice">Rp 75.000</div>
         </div>
         <button class="btn btn-secondary" onclick="printReceipt()">🧾 Cetak Struk</button>
-        <button class="btn btn-primary" onclick="backToHome()">Selesai</button>
+<button class="btn btn-primary" onclick="shareReceipt()">📤 Bagikan Struk</button>
+<button class="btn btn-secondary" onclick="backToHome()">Selesai</button>
+
       </div>
 
       <!-- History -->
@@ -266,6 +268,54 @@
       document.getElementById(tab).classList.add('active');
       if (tab === 'history') updateHistoryList();
     }
+
+function shareReceipt() {
+  const { name, pickup, destination, driver, price, date } = currentRide;
+
+  // Buat tampilan struk sementara di memori
+  const receiptContainer = document.createElement("div");
+  receiptContainer.style.width = "350px";
+  receiptContainer.style.padding = "20px";
+  receiptContainer.style.background = "white";
+  receiptContainer.style.borderRadius = "15px";
+  receiptContainer.style.fontFamily = "'Segoe UI', sans-serif";
+  receiptContainer.innerHTML = `
+    <h2 style="text-align:center;color:#667eea;">🧾 Struk Perjalanan</h2>
+    <hr style="margin:10px 0;">
+    <p><strong>Nama:</strong> ${name}</p>
+    <p><strong>Driver:</strong> ${driver.name} (${driver.vehicle} - ${driver.plate})</p>
+    <p><strong>Dari:</strong> ${pickup}</p>
+    <p><strong>Ke:</strong> ${destination}</p>
+    <p><strong>Total:</strong> ${price}</p>
+    <p><strong>Tanggal:</strong> ${date}</p>
+    <hr style="margin:10px 0;">
+    <p style="text-align:center;color:#555;">Terima kasih telah menggunakan <strong>Taxol 🚕</strong></p>
+  `;
+  document.body.appendChild(receiptContainer);
+
+  // Ubah struk jadi gambar
+  html2canvas(receiptContainer, { scale: 2 }).then(canvas => {
+    canvas.toBlob(blob => {
+      const file = new File([blob], "Struk_Taxol.jpg", { type: "image/jpeg" });
+
+      // Gunakan Web Share API
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        navigator.share({
+          title: "Struk Perjalanan Taxol",
+          text: "Berikut struk perjalanan Anda dari TAXOL 🚕",
+          files: [file]
+        }).catch(err => console.log("Share dibatalkan:", err));
+      } else {
+        alert("Browser kamu tidak mendukung fitur share gambar otomatis 😢");
+      }
+
+      // Hapus elemen struk setelah selesai
+      receiptContainer.remove();
+    }, "image/jpeg");
+  });
+}
+
+
 
     function setPickup(terminal) {
       document.getElementById('pickup').value = terminal;
