@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taxol - Taxi Online</title>
+  <style>
+    * {margin:0;padding:0;box-sizing:border-box;}
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+      min-height: 100vh; display: flex; align-items:center; justify-content:center; padding:20px;
+    }
+    .container {
+      background:white; border-radius:30px; box-shadow:0 20px 60px rgba(0,0,0,0.3);
+      max-width:450px; width:100%; overflow:hidden; animation:slideUp 0.5s ease-out;
+    }
+    @keyframes slideUp {from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+    .header {background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;padding:30px 25px;text-align:center;}
+    .logo {font-size:2.2em;font-weight:bold;margin-bottom:5px;}
+    .tagline {font-size:0.9em;opacity:0.9;}
+    .nav-tabs {display:flex;background:#f8f9fa;border-bottom:2px solid #e0e0e0;}
+    .nav-tab {flex:1;padding:15px;text-align:center;cursor:pointer;font-weight:600;color:#666;border:none;background:none;transition:all 0.3s;}
+    .nav-tab.active {background:white;color:#667eea;border-bottom:3px solid #667eea;}
+    .content {padding:25px;}
+    .screen {display:none;animation:fadeIn 0.3s ease-in;}
+    .screen.active {display:block;}
+    @keyframes fadeIn {from{opacity:0;}to{opacity:1;}}
+    .input-group {margin-bottom:20px;}
+    .input-group label {display:block;margin-bottom:8px;color:#333;font-weight:600;font-size:0.9em;}
+    .input-wrapper {position:relative;}
+    .input-icon {position:absolute;left:15px;top:50%;transform:translateY(-50%);color:#667eea;font-size:1.2em;}
+    input,select {
+      width:100%;padding:15px 15px 15px 45px;border:2px solid #e0e0e0;
+      border-radius:12px;font-size:1em;transition:all 0.3s;background:white;
+    }
+    input:focus,select:focus {outline:none;border-color:#667eea;box-shadow:0 0 0 3px rgba(102,126,234,0.1);}
+    .btn {width:100%;padding:16px;border:none;border-radius:12px;font-size:1.1em;font-weight:600;cursor:pointer;transition:all 0.3s;margin-top:10px;}
+    .btn-primary {background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;box-shadow:0 4px 15px rgba(102,126,234,0.4);}
+    .btn-secondary {background:#f0f0f0;color:#333;}
+    .btn-secondary:hover {background:#e0e0e0;}
+    .terminal-buttons {display:flex;gap:10px;}
+    .terminal-btn {flex:1;padding:12px;border:2px solid #e0e0e0;border-radius:10px;background:#f8f9fa;cursor:pointer;font-weight:600;transition:all 0.3s;}
+    .terminal-btn:hover {background:#e9f0ff;border-color:#667eea;}
+    .terminal-btn.active {background:#667eea;color:white;border-color:#667eea;}
+    .service-grid {display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-bottom:20px;}
+    .service-card {padding:20px;border:2px solid #e0e0e0;border-radius:15px;text-align:center;cursor:pointer;transition:all 0.3s;background:white;}
+    .service-card.selected {border-color:#667eea;background:rgba(102,126,234,0.05);}
+    .price-estimate {background:rgba(102,126,234,0.1);padding:20px;border-radius:15px;margin:20px 0;text-align:center;}
+    .price-amount {font-size:2em;font-weight:bold;color:#667eea;}
+    .status-box {text-align:center;padding:30px;}
+    .status-icon {font-size:4em;margin-bottom:15px;animation:bounce 1s ease-in-out infinite;}
+    @keyframes bounce {0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+    .history-item {border-bottom:1px solid #eee;padding:10px 0;font-size:0.9em;cursor:pointer;}
+    .history-item:hover {background:rgba(102,126,234,0.05);}
+    .history-item strong {color:#667eea;}
+
+    /* Modal */
+    .modal {
+      display:none;position:fixed;z-index:999;left:0;top:0;width:100%;height:100%;
+      background:rgba(0,0,0,0.6);align-items:center;justify-content:center;
+    }
+    .modal-content {
+      background:white;border-radius:20px;padding:25px;max-width:400px;width:90%;
+      box-shadow:0 10px 30px rgba(0,0,0,0.3);animation:popIn 0.3s ease;
+    }
+    @keyframes popIn {from{transform:scale(0.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+    .modal-content h3 {margin-bottom:15px;color:#667eea;}
+    .close-btn {background:#667eea;color:white;border:none;padding:10px 15px;border-radius:10px;margin-top:15px;cursor:pointer;width:100%;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">🚕 FAKE TAXI</div>
+      <div class="tagline">Perjalanan Nyaman, Harga Terjangkau</div>
+    </div>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchTab('booking')">Pesan</button>
+      <button class="nav-tab" onclick="switchTab('history')">Riwayat</button>
+    </div>
+
+    <div class="content">
+      <!-- Booking -->
+      <div id="booking" class="screen active">
+        <div class="input-group">
+          <label>👤 Nama Penumpang</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input type="text" id="customerName" placeholder="Masukkan nama Anda">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>📍 Lokasi Jemput</label>
+          <div class="terminal-buttons">
+            <button type="button" class="terminal-btn" onclick="setPickup('Terminal 1')">Terminal 1</button>
+            <button type="button" class="terminal-btn" onclick="setPickup('Terminal 2')">Terminal 2</button>
+            <button type="button" class="terminal-btn" onclick="setPickup('Terminal 3')">Terminal 3</button>
+          </div>
+          <input type="hidden" id="pickup" value="">
+        </div>
+
+        <div class="input-group">
+          <label>🎯 Tujuan</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🎯</span>
+            <input type="text" id="destination" placeholder="Masukkan tujuan">
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>🚗 Pilih Layanan</label>
+          <div class="service-grid">
+            <div class="service-card selected" onclick="selectService(this, 'regular')">🚗 Regular</div>
+            <div class="service-card" onclick="selectService(this, 'premium')">✨ Premium</div>
+            <div class="service-card" onclick="selectService(this, 'xl')">🚙 XL</div>
+            <div class="service-card" onclick="selectService(this, 'airport')">✈ Airport</div>
+          </div>
+        </div>
+                <div class="input-group">
+        <label>🎟️ Kode Voucher</label>
+        <div class="input-wrapper">
+            <span class="input-icon">💸</span>
+            <input type="text" id="voucherCode" placeholder="Masukkan kode voucher (opsional)">
+        </div>
+        </div>
+
+
+        <div class="price-estimate">
+          <div class="price-amount" id="priceEstimate">Rp 75.000</div>
+        </div>
+
+        <button class="btn btn-primary" onclick="findDriver()">🔍 Cari Driver</button>
+      </div>
+
+      <!-- Finding -->
+      <div id="finding" class="screen">
+        <div class="status-box">
+          <div class="status-icon">🔍</div>
+          <div class="status-text">Mencari driver...</div>
+        </div>
+      </div>
+
+    <!-- Driver Found -->
+<div id="driverFound" class="screen">
+  <div class="status-box">
+    <div style="font-size:3em;">🚖</div>
+    <div class="status-text">Driver ditemukan!</div>
+    <p id="driverInfo"></p>
+  </div>
+  <button class="btn btn-primary" onclick="startTrip()">Mulai Perjalanan 🚗</button>
+  <button class="btn btn-secondary" onclick="cancelRide()">❌ Batalkan</button>
+</div>
+
+
+      <!-- Trip -->
+      <div id="trip" class="screen">
+        <div class="status-box">
+          <div style="font-size:3em;">🛣️</div>
+          <div class="status-text">Perjalanan sedang berlangsung...</div>
+        </div>
+      </div>
+
+      <!-- Complete -->
+      <div id="complete" class="screen">
+        <div class="status-box">
+          <div style="font-size:3em;">🎉</div>
+          <div class="status-text">Perjalanan Selesai!</div>
+        </div>
+        <div class="price-estimate">
+          <div class="price-amount" id="finalPrice">Rp 75.000</div>
+        </div>
+        <button class="btn btn-secondary" onclick="printReceipt()">🧾 Cetak Struk</button>
+        <button class="btn btn-primary" onclick="backToHome()">Selesai</button>
+      </div>
+
+      <!-- History -->
+      <div id="history" class="screen">
+        <div class="status-box">
+          <h3>Riwayat Perjalanan</h3>
+          <div id="historyList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detail Riwayat -->
+  <div id="modalDetail" class="modal">
+    <div class="modal-content" id="modalContent">
+      <h3>Detail Perjalanan</h3>
+      <div id="modalBody"></div>
+      <button class="close-btn" onclick="closeModal()">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedService = 'regular';
+    let rideHistory = [];
+    const drivers = [
+      { name: "Ariansyah", vehicle: "Toyota Supra", plate: "B 1945 ags" },
+      { name: "Dimas", vehicle: "Audi R8", plate: "B 3010 spt" },
+      { name: "Rizky", vehicle: "McLaren 720s", plate: "B 2521 aib" },
+      { name: "Bagus", vehicle: "Tesla Roadster", plate: "B 7810 DEF" },
+      { name: "Ghifar", vehicle: "Porsche 911 Turbo S", plate: "B 1998 HAM" }
+    ];
+    let currentRide = {};
+
+    function switchTab(tab) {
+      document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(tab).classList.add('active');
+      if (tab === 'history') updateHistoryList();
+    }
+
+    function setPickup(terminal) {
+      document.getElementById('pickup').value = terminal;
+      document.querySelectorAll('.terminal-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function selectService(card, service) {
+      document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selectedService = service;
+      updatePrice();
+    }
+
+    function updatePrice() {
+  const prices = { regular: 75000, premium: 125000, xl: 100000, airport: 150000 };
+  let basePrice = prices[selectedService];
+  const voucher = document.getElementById('voucherCode').value.trim().toUpperCase();
+
+  // Contoh daftar voucher
+  const vouchers = {
+    DISKON10: 0.10, // diskon 10%
+    HEMAT25: 0.25,  // diskon 25%
+    GRATIS50: 0.50  // diskon 50%
+  };
+
+  let discount = 0;
+  if (voucher && vouchers[voucher]) {
+    discount = vouchers[voucher];
+    basePrice = basePrice - (basePrice * discount);
+  }
+
+  document.getElementById('priceEstimate').textContent =
+    'Rp ' + basePrice.toLocaleString('id-ID');
+}
+document.getElementById('voucherCode').addEventListener('input', updatePrice);
+
+
+
+    function findDriver() {
+      const name = document.getElementById('customerName').value;
+      const pickup = document.getElementById('pickup').value;
+      const destination = document.getElementById('destination').value;
+      if (!name || !pickup || !destination) {
+        alert("Mohon lengkapi semua data sebelum memesan.");
+        return;
+      }
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('finding').classList.add('active');
+      setTimeout(() => {
+        const driver = drivers[Math.floor(Math.random() * drivers.length)];
+       const voucherCode = document.getElementById('voucherCode').value.trim().toUpperCase() || "-";
+currentRide = { name, pickup, destination, driver, price: document.getElementById('priceEstimate').textContent, voucher: voucherCode };
+
+        document.getElementById('finding').classList.remove('active');
+        document.getElementById('driverFound').classList.add('active');
+        document.getElementById('driverInfo').innerHTML = `<strong>${driver.name}</strong> - ${driver.vehicle}<br>Plat: ${driver.plate}`;
+      }, 2000);
+    }
+
+    function startTrip() {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('trip').classList.add('active');
+      setTimeout(() => {
+        document.getElementById('trip').classList.remove('active');
+        document.getElementById('complete').classList.add('active');
+        document.getElementById('finalPrice').textContent = currentRide.price;
+        const date = new Date().toLocaleString('id-ID');
+        currentRide.date = date;
+        rideHistory.unshift(currentRide);
+        localStorage.setItem('taxolHistory', JSON.stringify(rideHistory));
+      }, 4000);
+    }
+
+    function backToHome() {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('booking').classList.add('active');
+      document.querySelectorAll('.nav-tab').forEach(btn => btn.classList.remove('active'));
+      document.querySelector('.nav-tab').classList.add('active');
+    }
+
+    function printReceipt() {
+      const { name, pickup, destination, driver, price, date } = currentRide;
+      const receipt = `
+        <h2>🧾 Struk Perjalanan</h2>
+        <p><strong>Nama:</strong> ${name}</p>
+        <p><strong>Driver:</strong> ${driver.name} (${driver.vehicle} - ${driver.plate})</p>
+        <p><strong>Dari:</strong> ${pickup}</p>
+        <p><strong>Ke:</strong> ${destination}</p>
+        <p><strong>Total:</strong> ${price}</p>
+        <p><strong>Tanggal:</strong> ${date}</p>
+        <p>Terima kasih telah menggunakan Taxol 🚕</p>
+      `;
+      const w = window.open('', '_blank');
+      w.document.write(receipt);
+      w.print();
+    }
+
+    function updateHistoryList() {
+      const historyList = document.getElementById('historyList');
+      rideHistory = JSON.parse(localStorage.getItem('taxolHistory') || "[]");
+      if (rideHistory.length === 0) {
+        historyList.innerHTML = "<p>Belum ada riwayat perjalanan.</p>";
+      } else {
+        historyList.innerHTML = rideHistory.map((item, index) => `
+  <div class="history-item" onclick="showDetail(${index})">
+    <strong>${item.pickup}</strong> → ${item.destination}<br>
+    ${item.price} • ${item.date}<br>
+    🎟️ Voucher: ${item.voucher !== "-" ? item.voucher : "Tidak digunakan"}<br>
+    👨‍✈️ ${item.driver.name} (${item.driver.vehicle})
+  </div>
+`).join("");
+
+      }
+    }
+
+    function showDetail(index) {
+      const item = rideHistory[index];
+      const modal = document.getElementById('modalDetail');
+      const body = document.getElementById('modalBody');
+      body.innerHTML = `
+        <p><strong>Nama Penumpang:</strong> ${item.name}</p>
+        <p><strong>Driver:</strong> ${item.driver.name} (${item.driver.vehicle} - ${item.driver.plate})</p>
+        <p><strong>Dari:</strong> ${item.pickup}</p>
+        <p><strong>Ke:</strong> ${item.destination}</p>
+        <p><strong>Total:</strong> ${item.price}</p>
+        <p><strong>Voucher:</strong> ${item.voucher !== "-" ? item.voucher : "Tidak digunakan"}</p>
+        <p><strong>Tanggal:</strong> ${item.date}</p>
+      `;
+      modal.style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById('modalDetail').style.display = "none";
+    }
+    function cancelRide() {
+  if (confirm("Apakah Anda yakin ingin membatalkan perjalanan ini?")) {
+    // Kembali ke halaman booking
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('booking').classList.add('active');
+
+    // Reset data driver yang ditemukan
+    currentRide = {};
+  }
+}
+
+
+    updatePrice();
+    updateHistoryList();
+  </script>
+</body>
+</html>
