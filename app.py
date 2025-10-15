@@ -230,5 +230,9 @@ def serve_frontend(path):
 # ======================
 if __name__ == '__main__':
     init_db()
-    print("✅ Server TAXOL aktif di http://127.0.0.1:5000")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    print("✅ Server TAXOL aktif")
+    import os
+    port = int(os.environ.get("PORT", 5000))
+    # debug=False di production
+    app.run(host='0.0.0.0', port=port, debug=False)
+
