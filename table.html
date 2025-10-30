@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisata Alam - Wisata Indonesia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            position: relative;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=1200') center/cover;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+            animation: fadeInDown 1s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 30px auto;
+            gap: 20px;
+            padding: 0 20px;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .sidebar-title {
+            padding: 0 30px 20px;
+            font-weight: 600;
+            color: #667eea;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar a:hover {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+            color: #667eea;
+            padding-left: 40px;
+        }
+        
+        .sidebar i {
+            font-size: 18px;
+            width: 20px;
+        }
+        
+        .main-content {
+            flex: 1;
+            background: white;
+            border-radius: 25px;
+            padding: 50px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            animation: fadeInUp 1s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .section {
+            margin-bottom: 60px;
+        }
+        
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 30px;
+            font-size: 2em;
+            border-bottom: 4px solid #764ba2;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        /* Modern Table Design */
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            background: white;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: white;
+        }
+        
+        table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        table th {
+            padding: 20px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: none;
+        }
+        
+        table th:first-child {
+            border-radius: 20px 0 0 0;
+        }
+        
+        table th:last-child {
+            border-radius: 0 20px 0 0;
+        }
+        
+        table td {
+            padding: 18px 15px;
+            border-bottom: 1px solid #f0f0f0;
+            color: #555;
+            transition: all 0.3s ease;
+        }
+        
+        table tbody tr {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        table tbody tr:hover {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
+            transform: scale(1.01);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+        
+        table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        table tbody tr:last-child td:first-child {
+            border-radius: 0 0 0 20px;
+        }
+        
+        table tbody tr:last-child td:last-child {
+            border-radius: 0 0 20px 0;
+        }
+        
+        /* Badge untuk tingkat kesulitan */
+        .badge {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            display: inline-block;
+        }
+        
+        .badge-easy {
+            background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+            color: #fff;
+        }
+        
+        .badge-medium {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            color: #2d3436;
+        }
+        
+        .badge-hard {
+            background: linear-gradient(135deg, #fd79a8 0%, #e84393 100%);
+            color: #fff;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 25px;
+            border-radius: 20px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+        }
+        
+        .stat-card i {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+        
+        .stat-card h3 {
+            font-size: 2em;
+            margin-bottom: 5px;
+        }
+        
+        .stat-card p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-mountain"></i> Wisata Alam Indonesia</h1>
+    </div>
+    
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-title">
+                <i class="fas fa-compass"></i> Menu Navigasi
+            </div>
+            <ul>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sign Out</a></li>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="bullet.html"><i class="fas fa-landmark"></i> Museum</a></li>
+                <li><a href="table.html"><i class="fas fa-mountain"></i> Wisata Alam</a></li>
+                <li><a href="frame.html"><i class="fas fa-water"></i> Wisata Bahari</a></li>
+                <li><a href="iframe.html"><i class="fas fa-monument"></i> Wisata Heritage</a></li>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="fas fa-mountain"></i>
+                    <h3>127+</h3>
+                    <p>Gunung Berapi</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-tree"></i>
+                    <h3>54</h3>
+                    <p>Taman Nasional</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-leaf"></i>
+                    <h3>25,000+</h3>
+                    <p>Spesies Tumbuhan</p>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>
+                    <i class="fas fa-hiking"></i>
+                    Destinasi Wisata Gunung di Indonesia
+                </h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Gunung</th>
+                                <th>Lokasi</th>
+                                <th>Ketinggian (mdpl)</th>
+                                <th>Tingkat Kesulitan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1</strong></td>
+                                <td><i class="fas fa-mountain" style="color: #667eea;"></i> <strong>Gunung Bromo</strong></td>
+                                <td>Jawa Timur</td>
+                                <td>2,329</td>
+                                <td><span class="badge badge-easy">Mudah</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>2</strong></td>
+                                <td><i class="fas fa-mountain" style="color: #667eea;"></i> <strong>Gunung Rinjani</strong></td>
+                                <td>Lombok, NTB</td>
+                                <td>3,726</td>
+                                <td><span class="badge badge-hard">Sulit</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>3</strong></td>
+                                <td><i class="fas fa-mountain" style="color: #667eea;"></i> <strong>Gunung Semeru</strong></td>
+                                <td>Jawa Timur</td>
+                                <td>3,676</td>
+                                <td><span class="badge badge-hard">Sulit</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>4</strong></td>
+                                <td><i class="fas fa-mountain" style="color: #667eea;"></i> <strong>Gunung Merapi</strong></td>
+                                <td>Yogyakarta-Jawa Tengah</td>
+                                <td>2,930</td>
+                                <td><span class="badge badge-medium">Sedang</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>5</strong></td>
+                                <td><i class="fas fa-mountain" style="color: #667eea;"></i> <strong>Gunung Batur</strong></td>
+                                <td>Bali</td>
+                                <td>1,717</td>
+                                <td><span class="badge badge-easy">Mudah</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h2>
+                    <i class="fas fa-tree"></i>
+                    Taman Nasional Populer di Indonesia
+                </h2>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama Taman Nasional</th>
+                                <th>Provinsi</th>
+                                <th>Luas (Ha)</th>
+                                <th>Flora/Fauna Utama</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>1</strong></td>
+                                <td><i class="fas fa-dragon" style="color: #667eea;"></i> <strong>Taman Nasional Komodo</strong></td>
+                                <td>NTT</td>
+                                <td>219,322</td>
+                                <td>Komodo</td>
+                            </tr>
+                            <tr>
+                                <td><strong>2</strong></td>
+                                <td><i class="fas fa-fish" style="color: #667eea;"></i> <strong>Taman Nasional Bunaken</strong></td>
+                                <td>Sulawesi Utara</td>
+                                <td>89,065</td>
+                                <td>Terumbu Karang</td>
+                            </tr>
+                            <tr>
+                                <td><strong>3</strong></td>
+                                <td><i class="fas fa-paw" style="color: #667eea;"></i> <strong>Taman Nasional Gunung Leuser</strong></td>
+                                <td>Aceh-Sumatra Utara</td>
+                                <td>1,094,692</td>
+                                <td>Orangutan</td>
+                            </tr>
+                            <tr>
+                                <td><strong>4</strong></td>
+                                <td><i class="fas fa-hippo" style="color: #667eea;"></i> <strong>Taman Nasional Ujung Kulon</strong></td>
+                                <td>Banten</td>
+                                <td>122,956</td>
+                                <td>Badak Jawa</td>
+                            </tr>
+                            <tr>
+                                <td><strong>5</strong></td>
+                                <td><i class="fas fa-leaf" style="color: #667eea;"></i> <strong>Taman Nasional Bromo Tengger Semeru</strong></td>
+                                <td>Jawa Timur</td>
+                                <td>50,276</td>
+                                <td>Edelweiss</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Kembali ke Homepage
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Add hover effect to table rows
+        const tableRows = document.querySelectorAll('tbody tr');
+        tableRows.forEach(row => {
+            row.addEventListener('click', function() {
+                this.style.background = 'linear-gradient(90deg, rgba(102, 126, 234, 0.15) 0%, rgba(118, 75, 162, 0.15) 100%)';
+                setTimeout(() => {
+                    this.style.background = '';
+                }, 500);
+            });
+        });
+    </script>
+</body>
+</html>

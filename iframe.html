@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisata Heritage - Wisata Indonesia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .header {
+            position: relative;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1591848478625-de43268e6fb8?w=1200') center/cover;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            font-size: 3.5em;
+            font-weight: 700;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+            animation: fadeInDown 1s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 30px auto;
+            gap: 20px;
+            padding: 0 20px;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .sidebar-title {
+            padding: 0 30px 20px;
+            font-weight: 600;
+            color: #667eea;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar a:hover {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+            color: #667eea;
+            padding-left: 40px;
+        }
+        
+        .sidebar i {
+            font-size: 18px;
+            width: 20px;
+        }
+        
+        .main-content {
+            flex: 1;
+            animation: fadeInUp 1s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .intro-section {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+        
+        .intro-section h2 {
+            color: #667eea;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .intro-section p {
+            line-height: 1.9;
+            color: #555;
+            font-size: 1.05em;
+        }
+        
+        .unesco-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-top: 15px;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        /* Modern Video Container */
+        .video-container {
+            background: white;
+            padding: 40px;
+            margin-bottom: 30px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+        
+        .video-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        
+        .video-container h3 {
+            color: #667eea;
+            margin-bottom: 25px;
+            font-size: 1.8em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 3px solid #764ba2;
+            padding-bottom: 15px;
+        }
+        
+        .video-description {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            line-height: 1.8;
+            color: #555;
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 30px;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .back-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+        /* Video Wrapper untuk Video Lokal - UKURAN DIPERBAIKI */
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%; /* Aspect ratio 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    background: #000;
+    margin-bottom: 10px;
+}
+
+.video-wrapper video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+}
+
+/* Custom Video Controls */
+video {
+    outline: none;
+}
+
+video::-webkit-media-controls-panel {
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+}
+
+video::-webkit-media-controls-play-button {
+    background-color: rgba(102, 126, 234, 0.8);
+    border-radius: 50%;
+}
+
+video::-webkit-media-controls-current-time-display,
+video::-webkit-media-controls-time-remaining-display {
+    color: #fff;
+}
+
+        
+        /* ======================================== */
+        
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-monument"></i> Wisata Heritage Indonesia</h1>
+    </div>
+    
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-title">
+                <i class="fas fa-compass"></i> Menu Navigasi
+            </div>
+            <ul>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sign Out</a></li>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="bullet.html"><i class="fas fa-landmark"></i> Museum</a></li>
+                <li><a href="table.html"><i class="fas fa-mountain"></i> Wisata Alam</a></li>
+                <li><a href="frame.html"><i class="fas fa-water"></i> Wisata Bahari</a></li>
+                <li><a href="iframe.html"><i class="fas fa-monument"></i> Wisata Heritage</a></li>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <div class="intro-section">
+                <h2>
+                    <i class="fas fa-globe-asia"></i>
+                    Situs Warisan Dunia UNESCO di Indonesia
+                </h2>
+                <p>Indonesia memiliki 9 situs yang telah diakui sebagai Warisan Dunia UNESCO. Situs-situs ini mencakup warisan budaya dan alam yang memiliki nilai universal luar biasa. Berikut adalah beberapa informasi dan video tentang situs-situs tersebut:</p>
+                <div class="unesco-badge">
+                    <i class="fas fa-award"></i> 9 UNESCO World Heritage Sites
+                </div>
+            </div>
+            
+            <!-- VIDEO 1: Candi Borobudur - LOKAL -->
+            <div class="video-container">
+                <h3>
+                    <i class="fas fa-video"></i>
+                    1. Candi Borobudur
+                </h3>
+                <div class="video-wrapper">
+                    <video controls poster="assets/images/borobudur-thumbnail.jpg">
+                        <source src="assets/videos/borobudur.mp4" type="video/mp4">
+                        Browser Anda tidak mendukung pemutaran video.
+                    </video>
+                </div>
+                <div class="video-description">
+                    <strong>Borobudur</strong> adalah candi Buddha terbesar di dunia yang dibangun pada abad ke-9. Terletak di Magelang, Jawa Tengah, candi ini memiliki 504 arca Buddha dan 2.672 panel relief. Kompleks percandian ini merupakan salah satu monumen Buddha terbesar di dunia dan menjadi destinasi wisata spiritual yang penting.
+                </div>
+            </div>
+            
+            <!-- VIDEO 2: Candi Prambanan - LOKAL -->
+            <div class="video-container">
+                <h3>
+                    <i class="fas fa-video"></i>
+                    2. Candi Prambanan
+                </h3>
+                <div class="video-wrapper">
+                    <video controls poster="assets/images/prambanan-thumbnail.jpg">
+                        <source src="assets/videos/prambanan.mp4" type="video/mp4">
+                        Browser Anda tidak mendukung pemutaran video.
+                    </video>
+                </div>
+                <div class="video-description">
+                    <strong>Prambanan</strong> adalah kompleks candi Hindu terbesar di Indonesia yang dibangun pada abad ke-9. Kompleks ini didedikasikan untuk Trimurti: Brahma, Wisnu, dan Siwa. Dengan arsitektur yang megah dan relief yang indah, Prambanan menjadi saksi kejayaan kerajaan Hindu di Jawa.
+                </div>
+            </div>
+            
+            <!-- GOOGLE MAPS -->
+            <div class="video-container">
+                <h3>
+                    <i class="fas fa-map-marked-alt"></i>
+                    3. Peta Lokasi Situs Heritage (Google Maps)
+                </h3>
+                <div class="video-wrapper" style="padding-bottom: 56.25%; height: 0; background: #f0f0f0;">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126748.61447138893!2d110.33909955820312!3d-7.6145340000000005!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e7a5ae3dbd859d1%3A0x19e7a03b25955a2d!2sCandi%20Borobudur!5e0!3m2!1sen!2sid!4v1234567890" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; border-radius: 20px;" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="video-description">
+                    Jelajahi lokasi Candi Borobudur dan situs heritage lainnya di Jawa Tengah melalui peta interaktif Google Maps.
+                </div>
+            </div>
+            
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Kembali ke Homepage
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        // Error handling untuk video
+        const videos = document.querySelectorAll('video');
+        videos.forEach(video => {
+            video.addEventListener('error', function() {
+                const container = this.closest('.video-wrapper');
+                container.innerHTML = '<div style="padding: 60px 20px; text-align: center; background: #f8f9fa; border-radius: 20px;"><i class="fas fa-exclamation-triangle" style="font-size: 50px; color: #ff6b6b; margin-bottom: 20px;"></i><h3 style="color: #333; margin-bottom: 10px;">Video Tidak Ditemukan</h3><p style="color: #666;">Pastikan file video tersimpan di folder <strong>assets/videos/</strong> dengan nama yang benar.</p></div>';
+            });
+        });
+    </script>
+</body>
+</html>
