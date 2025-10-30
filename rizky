@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisata Indonesia - My Holiday</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+        
+        .header {
+            position: relative;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1555400038-63f526b1d6f1?w=1200') center/cover;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.3), rgba(118, 75, 162, 0.3));
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            animation: fadeInDown 1s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header h1 {
+            font-size: 4em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 10px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .search-bar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 50px;
+            padding: 8px 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .search-container:hover {
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .search-container input {
+            border: none;
+            outline: none;
+            padding: 8px 15px;
+            width: 300px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 14px;
+        }
+        
+        .search-container button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .search-container button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 30px auto;
+            gap: 20px;
+            padding: 0 20px;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            animation: slideInLeft 0.8s ease;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .sidebar-title {
+            padding: 0 30px 20px;
+            font-weight: 600;
+            color: #667eea;
+            border-bottom: 2px solid #f0f0f0;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar ul {
+            list-style: none;
+        }
+        
+        .sidebar li {
+            margin: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 30px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sidebar a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .sidebar a:hover {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.1) 0%, transparent 100%);
+            color: #667eea;
+            padding-left: 40px;
+        }
+        
+        .sidebar a:hover::before {
+            transform: scaleY(1);
+        }
+        
+        .sidebar i {
+            font-size: 18px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .main-content {
+            flex: 1;
+            animation: fadeInUp 1s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .date {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.9em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .welcome {
+            text-align: center;
+            color: white;
+            font-size: 2.5em;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .content-box {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .content-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+        }
+        
+        .badge {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+            z-index: 2;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .content-box img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin: 20px 0;
+            transition: all 0.5s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .content-box img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+        
+        .description {
+            text-align: justify;
+            line-height: 1.9;
+            color: #555;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cta-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+        
+        .cta-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+        }
+        
+                        /* Modern Video Container */
+                .video-container {
+                    background: white;
+                    padding: 40px;
+                    border-radius: 25px;
+                    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+                    margin-bottom: 30px;
+                    transition: all 0.3s ease;
+                }
+
+                .video-container:hover {
+                    transform: translateY(-5px);
+                    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+                }
+
+                .video-container h3 {
+                    color: #667eea;
+                    margin-bottom: 25px;
+                    font-size: 1.8em;
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                }
+
+                /* Video Wrapper - UKURAN DIPERBAIKI UNTUK LOKAL */
+                .video-wrapper {
+                    position: relative;
+                    padding-bottom: 56.25%; /* Aspect ratio 16:9 */
+                    height: 0;
+                    overflow: hidden;
+                    border-radius: 20px;
+                    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+                    background: #000;
+                }
+
+                .video-wrapper video {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 20px;
+                }
+
+                /* Custom Video Controls */
+                video {
+                    outline: none;
+                }
+
+                video::-webkit-media-controls-panel {
+                    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+                }
+
+                video::-webkit-media-controls-play-button {
+                    background-color: rgba(102, 126, 234, 0.8);
+                    border-radius: 50%;
+                }
+
+                video::-webkit-media-controls-current-time-display,
+                video::-webkit-media-controls-time-remaining-display {
+                    color: #fff;
+                }
+
+        
+        .sidebar-right {
+            width: 320px;
+            animation: slideInRight 0.8s ease;
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .recommended-title {
+            background: white;
+            text-align: center;
+            color: #667eea;
+            font-size: 1.2em;
+            font-weight: 700;
+            padding: 25px;
+            border-radius: 20px 20px 0 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .places-container {
+            background: white;
+            padding: 20px;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .place-card {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 0;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        
+        .place-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+        }
+        
+        .place-card-image {
+            position: relative;
+            overflow: hidden;
+            height: 180px;
+        }
+        
+        .place-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .place-card:hover img {
+            transform: scale(1.15) rotate(2deg);
+        }
+        
+        .place-card-content {
+            padding: 20px;
+            background: white;
+        }
+        
+        .place-card h3 {
+            color: #667eea;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .place-card p {
+            font-size: 0.85em;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .place-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 10px;
+            color: #ffc107;
+        }
+        
+        @media (max-width: 1200px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar, .sidebar-right {
+                width: 100%;
+                position: static;
+            }
+        }
+        /* Audio Player - Background Music */
+.audio-player {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    z-index: 1000;
+    animation: fadeInUp 1s ease;
+}
+
+.music-toggle {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+}
+
+.music-toggle:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+}
+
+.music-toggle i {
+    font-size: 18px;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+.music-toggle.playing i {
+    animation: rotate 3s linear infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .audio-player {
+        bottom: 20px;
+        left: 20px;
+    }
+    
+    .music-toggle {
+        padding: 12px 20px;
+        font-size: 12px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <h1>Wisata Indonesia</h1>
+            <p>Discover the Beauty of Indonesian Tourism</p>
+        </div>
+    </div>
+    
+    <div class="search-bar">
+        <div class="search-container">
+            <input type="text" placeholder="Cari destinasi impian Anda...">
+            <button><i class="fas fa-search"></i> Search</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="sidebar">
+            <div class="sidebar-title">
+                <i class="fas fa-compass"></i> Menu Navigasi
+            </div>
+            <ul>
+                <li><a href="#"><i class="fas fa-sign-out-alt"></i> Sign Out</a></li>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="bullet.html"><i class="fas fa-landmark"></i> Museum</a></li>
+                <li><a href="table.html"><i class="fas fa-mountain"></i> Wisata Alam</a></li>
+                <li><a href="frame.html"><i class="fas fa-water"></i> Wisata Bahari</a></li>
+                <li><a href="iframe.html"><i class="fas fa-monument"></i> Wisata Heritage</a></li>
+            </ul>
+        </div>
+        
+        <div class="main-content">
+            <div class="date">
+                <i class="fas fa-calendar-alt"></i> September 14, 2024
+            </div>
+            <h2 class="welcome">SELAMAT DATANG DI WISATA INDONESIA</h2>
+            
+            <div class="content-box">
+                <div class="badge">
+                    <i class="fas fa-star"></i> Pantai Raja Ampat
+                </div>
+                <img src="assets/images/pulau-indonesia.jpg" alt="Pulau Indonesia">
+
+                
+                <div class="description">
+                    <p>Indonesia adalah negara dengan keindahan alam yang sangat luas yang terhampar dari Sabang sampai Merauke. Keindahan alam Indonesia tidak bisa dikombinasikan dengan karakteristik unik dari masing-masing komunitas yang ada di Indonesia. Dengan adanya wisata alamnya, kemudian wisata budayanya dan keramahan penduduknya menjadikan Indonesia adalah negara kaya akan wisatanya.</p>
+                    <br>
+                    <p>Dengan ribuan pulau, ratusan destinasi wisata, dan keanekaragaman budaya yang luar biasa, Indonesia menawarkan pengalaman wisata yang tak terlupakan untuk setiap pengunjung.</p>
+                    
+                    <a href="#" class="cta-link">
+                        <i class="fas fa-map-marked-alt"></i> Jelajahi Destinasi
+                    </a>
+                </div>
+            </div>
+            
+            <!-- VIDEO LOKAL -->
+            <div class="video-container">
+                <h3><i class="fas fa-video"></i> Video Wisata Indonesia</h3>
+                <div class="video-wrapper">
+                    <video controls poster="assets/images/video-thumbnail.jpg">
+                        <source src="assets/videos/wisata-indonesia.mp4" type="video/mp4">
+                        <source src="assets/videos/wisata-indonesia.webm" type="video/webm">
+                        Browser Anda tidak mendukung pemutaran video. Silakan gunakan browser modern seperti Chrome, Firefox, atau Edge.
+                    </video>
+                </div>
+                <p style="margin-top: 15px; color: #666; font-size: 0.9em;">
+                    <i class="fas fa-info-circle"></i> Video ini keindahan wisata Indonesia dari Sabang sampai Merauke
+                </p>
+            </div>
+        </div>
+        
+        <div class="sidebar-right">
+    <div class="recommended-title">
+        <i class="fas fa-heart"></i> REKOMENDASI DESTINASI
+    </div>
+    <div class="places-container">
+        <!-- CARD 1: Gunung Bromo -->
+        <div class="place-card">
+            <div class="place-card-image">
+                <img src="assets/images/bromo.jpg" alt="Gunung Bromo">
+                <div class="place-card-overlay"></div>
+            </div>
+            <div class="place-card-content">
+                <h3><i class="fas fa-mountain"></i> Wisata Gunung Bromo</h3>
+                <p>Gunung Bromo terletak di empat wilayah kabupaten yaitu Kabupaten Probolinggo, Kabupaten Pasuruan, Kabupaten Lumajang, dan Kabupaten Malang.</p>
+                <div class="place-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span style="color: #666; margin-left: 5px;">5.0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CARD 2: Pantai Belitung -->
+        <div class="place-card">
+            <div class="place-card-image">
+                <img src="assets/images/belitung.jpg" alt="Pantai Belitung">
+                <div class="place-card-overlay"></div>
+            </div>
+            <div class="place-card-content">
+                <h3><i class="fas fa-umbrella-beach"></i> Pantai Pulau Belitung</h3>
+                <p>Pulau Belitung merupakan pulau yang terletak di lepas pantai timur Sumatra dengan pantai yang indah dan batu granit yang unik.</p>
+                <div class="place-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                    <span style="color: #666; margin-left: 5px;">4.8</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- CARD 3: Raja Ampat - BARU! -->
+        <div class="place-card">
+            <div class="place-card-image">
+                <img src="assets/images/raja-ampat.jpg" alt="Raja Ampat">
+                <div class="place-card-overlay"></div>
+            </div>
+            <div class="place-card-content">
+                <h3><i class="fas fa-water"></i> Pantai Raja Ampat</h3>
+                <p>Raja Ampat di Papua Barat adalah surga tersembunyi dengan keindahan bawah laut terkaya di dunia. Memiliki 1.500 pulau kecil dan 600 spesies karang yang memukau.</p>
+                <div class="place-rating">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <span style="color: #666; margin-left: 5px;">5.0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Audio Background Music dengan Control -->
+<div class="audio-player">
+    <audio id="bgMusic" loop>
+        <source src="assets/audio/background-music.mp3" type="audio/mpeg">
+        <source src="assets/audio/background-music.ogg" type="audio/ogg">
+        Browser Anda tidak mendukung audio.
+    </audio>
+    
+    <button id="musicToggle" class="music-toggle">
+        <i class="fas fa-music"></i>
+        <span id="musicStatus">Play Music</span>
+    </button>
+</div>
+
+
+    </div>
+    
+    <script>
+    // ========================================
+    // FUNGSI SEARCH YANG BERFUNGSI
+    // ========================================
+    
+    const searchInput = document.querySelector('.search-container input');
+    const searchButton = document.querySelector('.search-container button');
+    
+    // Data destinasi wisata untuk pencarian
+    const destinations = [
+        { name: 'Borobudur', page: 'iframe.html', category: 'heritage' },
+        { name: 'Prambanan', page: 'iframe.html', category: 'heritage' },
+        { name: 'Museum', page: 'bullet.html', category: 'museum' },
+        { name: 'Gunung Bromo', page: 'table.html', category: 'alam' },
+        { name: 'Gunung Rinjani', page: 'table.html', category: 'alam' },
+        { name: 'Taman Nasional', page: 'table.html', category: 'alam' },
+        { name: 'Raja Ampat', page: 'frame.html', category: 'bahari' },
+        { name: 'Bunaken', page: 'frame.html', category: 'bahari' },
+        { name: 'Pantai Belitung', page: 'index.html', category: 'bahari' },
+        { name: 'Wisata Alam', page: 'table.html', category: 'alam' },
+        { name: 'Wisata Bahari', page: 'frame.html', category: 'bahari' },
+        { name: 'Wisata Heritage', page: 'iframe.html', category: 'heritage' }
+    ];
+    
+    // Fungsi search saat tombol diklik
+    searchButton.addEventListener('click', function() {
+        performSearch();
+    });
+    
+    // Fungsi search saat tekan Enter
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
+    });
+    
+    // Fungsi utama untuk melakukan pencarian
+    function performSearch() {
+        const query = searchInput.value.toLowerCase().trim();
+        
+        if (query === '') {
+            showNotification('Silakan masukkan kata kunci pencarian', 'warning');
+            return;
+        }
+        
+        // Cari destinasi yang cocok
+        const results = destinations.filter(dest => 
+            dest.name.toLowerCase().includes(query) || 
+            dest.category.toLowerCase().includes(query)
+        );
+        
+        if (results.length > 0) {
+            // Ambil hasil pertama
+            const firstResult = results[0];
+            
+            // Tampilkan notifikasi
+            showNotification(`Ditemukan: ${firstResult.name}. Mengarahkan...`, 'success');
+            
+            // Redirect ke halaman yang sesuai setelah 1 detik
+            setTimeout(() => {
+                window.location.href = firstResult.page;
+            }, 1000);
+        } else {
+            showNotification('Destinasi tidak ditemukan. Coba kata kunci lain.', 'error');
+        }
+    }
+    
+    // Fungsi untuk menampilkan notifikasi
+    function showNotification(message, type) {
+        // Hapus notifikasi sebelumnya jika ada
+        const existingNotif = document.querySelector('.search-notification');
+        if (existingNotif) {
+            existingNotif.remove();
+        }
+        
+        // Buat elemen notifikasi
+        const notification = document.createElement('div');
+        notification.className = 'search-notification';
+        notification.textContent = message;
+        
+        // Styling berdasarkan type
+        const colors = {
+            success: '#10b981',
+            error: '#ef4444',
+            warning: '#f59e0b'
+        };
+        
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${colors[type] || colors.success};
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 9999;
+            animation: slideInRight 0.5s ease;
+            font-weight: 600;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Hapus notifikasi setelah 3 detik
+        setTimeout(() => {
+            notification.style.animation = 'slideOutRight 0.5s ease';
+            setTimeout(() => notification.remove(), 500);
+        }, 3000);
+    }
+    
+    // Auto-complete suggestions
+    searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase();
+        
+        if (query.length > 1) {
+            const suggestions = destinations.filter(dest => 
+                dest.name.toLowerCase().includes(query)
+            ).slice(0, 5);
+            
+            if (suggestions.length > 0) {
+                showSuggestions(suggestions);
+            } else {
+                hideSuggestions();
+            }
+        } else {
+            hideSuggestions();
+        }
+    });
+    
+    // Fungsi untuk menampilkan suggestions
+    function showSuggestions(suggestions) {
+        // Hapus suggestions sebelumnya
+        hideSuggestions();
+        
+        const suggestionBox = document.createElement('div');
+        suggestionBox.className = 'search-suggestions';
+        suggestionBox.style.cssText = `
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            margin-top: 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            overflow: hidden;
+            z-index: 1000;
+        `;
+        
+        suggestions.forEach((dest, index) => {
+            const item = document.createElement('div');
+            item.textContent = dest.name;
+            item.style.cssText = `
+                padding: 12px 20px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                border-bottom: ${index < suggestions.length - 1 ? '1px solid #f0f0f0' : 'none'};
+            `;
+            
+            item.addEventListener('mouseenter', function() {
+                this.style.background = 'linear-gradient(90deg, rgba(102, 126, 234, 0.1), transparent)';
+                this.style.paddingLeft = '30px';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.background = 'white';
+                this.style.paddingLeft = '20px';
+            });
+            
+            item.addEventListener('click', function() {
+                searchInput.value = dest.name;
+                hideSuggestions();
+                performSearch();
+            });
+            
+            suggestionBox.appendChild(item);
+        });
+        
+        const searchContainer = document.querySelector('.search-container');
+        searchContainer.style.position = 'relative';
+        searchContainer.appendChild(suggestionBox);
+    }
+    
+    // Fungsi untuk menyembunyikan suggestions
+    function hideSuggestions() {
+        const suggestions = document.querySelector('.search-suggestions');
+        if (suggestions) {
+            suggestions.remove();
+        }
+    }
+    
+    // Tutup suggestions saat klik di luar
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.search-container')) {
+            hideSuggestions();
+        }
+    });
+    
+    // ========================================
+    // SCROLL ANIMATION (yang sudah ada)
+    // ========================================
+    
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // ========================================
+// BACKGROUND MUSIC CONTROL
+// ========================================
+
+const bgMusic = document.getElementById('bgMusic');
+const musicToggle = document.getElementById('musicToggle');
+const musicStatus = document.getElementById('musicStatus');
+
+let isPlaying = false;
+
+musicToggle.addEventListener('click', function() {
+    if (isPlaying) {
+        bgMusic.pause();
+        musicToggle.classList.remove('playing');
+        musicStatus.textContent = 'Play Music';
+        musicToggle.innerHTML = '<i class="fas fa-music"></i><span id="musicStatus">Play Music</span>';
+    } else {
+        bgMusic.play();
+        musicToggle.classList.add('playing');
+        musicStatus.textContent = 'Pause Music';
+        musicToggle.innerHTML = '<i class="fas fa-pause"></i><span id="musicStatus">Pause Music</span>';
+    }
+    isPlaying = !isPlaying;
+});
+
+// Autoplay dengan user interaction (opsional)
+// Uncomment jika ingin musik otomatis play setelah user klik apapun
+/*
+document.addEventListener('click', function() {
+    if (!isPlaying) {
+        bgMusic.play();
+        musicToggle.classList.add('playing');
+        musicStatus.textContent = 'Pause Music';
+        isPlaying = true;
+    }
+}, { once: true });
+*/
+
+</script>
+
+</body>
+</html>
