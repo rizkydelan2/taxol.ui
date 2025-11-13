@@ -8,12 +8,6 @@
   <!-- Library untuk menyimpan struk sebagai JPEG -->
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 
-  <h2>Ariansyah maulana</h2>
-  <h2>Bagus mada rizki</h2>
-  <h2>Dimas ananda</h2>
-  <h2>gifar</h2>
-  <h2>rizky</h2>
-
   <style>
     * {
       margin: 0;
@@ -339,6 +333,82 @@
       font-size: 0.875rem;
       color: #6b7280;
       flex: 1;
+    }
+
+    /* Rating Styles */
+.rating-container {
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.star-rating {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.star {
+  font-size: 2.5rem;
+  color: #e5e7eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.star:hover,
+.star.active {
+  color: #fbbf24;
+  transform: scale(1.1);
+}
+
+.star.active {
+  animation: starPulse 0.3s ease;
+}
+
+@keyframes starPulse {
+  0%, 100% { transform: scale(1.1); }
+  50% { transform: scale(1.3); }
+}
+
+.rating-text {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6b7280;
+  transition: all 0.3s ease;
+}
+
+.rating-text.rated {
+  color: #f97316;
+  font-size: 1.125rem;
+}
+
+/* Admin Link */
+    .admin-link {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.875rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .admin-link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+      background: linear-gradient(135deg, #374151, #1f2937);
     }
 
     /* Dashboard */
@@ -1074,14 +1144,34 @@
                 <option>🏦 Transfer Bank</option>
               </select>
             </div>
+<div class="input-group">
+  <label class="input-label">⭐ Berikan Rating untuk Driver</label>
+  <div class="rating-container">
+    <div class="star-rating">
+      <span class="star" data-rating="1" onclick="setRating(1)">★</span>
+      <span class="star" data-rating="2" onclick="setRating(2)">★</span>
+      <span class="star" data-rating="3" onclick="setRating(3)">★</span>
+      <span class="star" data-rating="4" onclick="setRating(4)">★</span>
+      <span class="star" data-rating="5" onclick="setRating(5)">★</span>
+    </div>
+    <div class="rating-text" id="ratingText">Pilih rating Anda</div>
+  </div>
+</div>
 
+<div class="input-group">
+  <label class="input-label">💬 Ulasan (Opsional)</label>
+  <textarea id="reviewText" class="input-field" placeholder="Bagikan pengalaman Anda dengan driver..." rows="3" style="padding-left: 1rem;"></textarea>
+</div> 
             
             <button class="btn btn-primary" onclick="printStruk()">🧾 Cetak Struk</button>
+            
 
   <button class="btn btn-secondary" onclick="location.reload()">🔁 Pesan Lagi</button>
           </div>
         </div>
       </div>
+
+    
 
       <!-- History Tab -->
       <div id="historyTab" class="tab-content">
@@ -1191,6 +1281,8 @@
     let selectedVehicleType = 'Regular';
     let tripHistory = [];
     let loggedInDriver = null;
+    let currentRating = 0;
+    let currentReview = '';
 
     // Navigation Functions
     function showWelcome() {
@@ -1398,13 +1490,24 @@
     }
 
     // Complete Trip
-    function completeTrip() {
+   function completeTrip() {
   document.getElementById('onTripCard').classList.add('hidden');
   document.getElementById('completeCard').classList.remove('hidden');
 
   document.getElementById('finalPrice').textContent = 'Rp ' + currentPrice.toLocaleString('id-ID');
   document.getElementById('finalRoute').textContent = currentPickup + ' → ' + currentDestination;
   document.getElementById('finalInfo').textContent = `Jarak: ${currentDistance} km • Waktu: ${currentTime} menit`;
+
+  // Reset rating
+  currentRating = 0;
+  currentReview = '';
+  document.querySelectorAll('.star').forEach(star => star.classList.remove('active'));
+  document.getElementById('ratingText').textContent = 'Pilih rating Anda';
+  document.getElementById('ratingText').classList.remove('rated');
+  document.getElementById('reviewText').value = '';
+
+  alert('✅ Perjalanan selesai! Berikan rating untuk driver Anda.');
+
 
   // Simpan ke history lokal
   const trip = {
@@ -1537,7 +1640,53 @@
        CETAK STRUK + SIMPAN JPEG
        ================================ */
     function printStruk() {
-      const name = document.getElementById('customerName').value || 'Nama Penumpang';
+  // Validasi rating
+  if (currentRating === 0) {
+    alert('⚠️ Mohon berikan rating terlebih dahulu!');
+    return;
+  }
+
+  currentReview = document.getElementById('reviewText').value;
+
+  // Simpan ke history lokal
+  const trip = {
+    id: Date.now(),
+    customerName: document.getElementById('customerName').value,
+    pickup: currentPickup,
+    destination: currentDestination,
+    service: currentService,
+    distance: currentDistance,
+    time: currentTime,
+    price: currentPrice,
+    payment: document.getElementById('paymentMethod').value,
+    rating: currentRating,
+    review: currentReview,
+    date: new Date().toLocaleDateString('id-ID')
+  };
+  tripHistory.unshift(trip);
+
+  // === Kirim ke backend Flask ===
+  fetch("http://127.0.0.1:5000/api/trips", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      customerName: trip.customerName,
+      pickup: trip.pickup,
+      destination: trip.destination,
+      service: trip.service,
+      distance: trip.distance,
+      duration: trip.time + " menit",
+      price: trip.price,
+      paymentMethod: trip.payment
+    })
+  }).then(res => res.json())
+    .then(result => {
+      if (result.status === "ok") console.log("✅ Trip tersimpan di DB");
+      else console.error("❌ Gagal simpan trip", result);
+    })
+    .catch(err => console.error("⚠️ Error kirim trip:", err));
+
+  const name = document.getElementById('customerName').value || 'Nama Penumpang';
       const phone = document.getElementById('customerPhone').value || '-';
       const pickup = currentPickup || 'Lokasi Jemput';
       const destination = currentDestination || 'Tujuan';
@@ -1545,6 +1694,14 @@
       const payment = document.getElementById('paymentMethod').value || '-';
       const date = new Date().toLocaleString('id-ID');
       const trxId = 'TXL-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(Math.random()*9000+1000);
+const ratingStars = '⭐'.repeat(currentRating);
+const reviewSection = currentReview ? `
+  <div style="background: #fff5ed; padding: 12px; border-radius: 8px; margin-top: 12px; border-left: 4px solid #f97316;">
+    <div style="font-size: 12px; color: #6b7280; margin-bottom: 4px; font-weight: 600;">💬 Ulasan Pelanggan:</div>
+    <div style="font-size: 13px; color: #374151; font-style: italic;">"${currentReview}"</div>
+  </div>
+` : '';
+
 
       const strukHTML = `
         <div id="strukContainer" style="font-family: Arial, sans-serif; width:380px; margin:auto; padding:18px; border-radius:8px; background:#fff; border:1px solid #eee;">
@@ -1562,7 +1719,9 @@
             <tr><td style="padding:6px 0;">Jemput</td><td style="padding:6px 0;">: ${pickup}</td></tr>
             <tr><td style="padding:6px 0;">Tujuan</td><td style="padding:6px 0;">: ${destination}</td></tr>
             <tr><td style="padding:6px 0;">Metode</td><td style="padding:6px 0;">: ${payment}</td></tr>
+            <tr><td style="padding:6px 0;">Rating</td><td style="padding:6px 0;">: ${ratingStars} (${currentRating}/5)</td></tr>
           </table>
+          ${reviewSection}
           <hr style="border:none; border-top:1px dashed #eee; margin:8px 0;">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div style="font-size:12px; color:#6b7280;">Terima kasih telah menggunakan TAXOL</div>
@@ -1958,6 +2117,38 @@ const newWin = window.open("", "_blank");
 newWin.document.write(strukFullHTML);
 newWin.document.close();
     }
+    /* ================================
+   RATING SYSTEM
+   ================================ */
+function setRating(rating) {
+  currentRating = rating;
+  const stars = document.querySelectorAll('.star');
+  const ratingText = document.getElementById('ratingText');
+  
+  stars.forEach((star, index) => {
+    if (index < rating) {
+      star.classList.add('active');
+    } else {
+      star.classList.remove('active');
+    }
+  });
+  
+  const ratingMessages = {
+    1: '😞 Sangat Tidak Puas',
+    2: '😕 Tidak Puas',
+    3: '😐 Cukup',
+    4: '😊 Puas',
+    5: '🤩 Sangat Puas!'
+  };
+  
+  ratingText.textContent = ratingMessages[rating];
+  ratingText.classList.add('rated');
+}
   </script>
+  <!-- Link ke Admin Panel -->
+  <a href="admin.html" class="admin-link">
+    🛡️ Admin
+  </a>
+
 </body>
 </html>
