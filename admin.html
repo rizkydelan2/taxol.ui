@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TAXOL - Admin Panel</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", "Inter", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+      min-height: 100vh;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Login Screen */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .login-card {
+      background: white;
+      border-radius: 1.5rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      width: 100%;
+      max-width: 450px;
+      padding: 2rem;
+    }
+
+    .logo-container {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #f97316, #dc2626);
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .logo-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+    }
+
+    .logo-subtitle {
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+
+    .login-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1f2937;
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .input-group {
+      margin-bottom: 1rem;
+    }
+
+    .input-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 0.75rem 1rem 0.75rem 2.5rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.75rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: #f97316;
+      box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f97316, #dc2626);
+      color: white;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(249, 115, 22, 0.5);
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #1f2937;
+      border: 2px solid #e5e7eb;
+      margin-top: 0.5rem;
+    }
+
+    .btn-secondary:hover {
+      background: #f9fafb;
+    }
+
+    /* Dashboard */
+    .dashboard-screen {
+      min-height: 100vh;
+      background: #f3f4f6;
+    }
+
+    .dashboard-header {
+      background: linear-gradient(135deg, #1f2937, #111827);
+      color: white;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .dashboard-header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .dashboard-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .dashboard-subtitle {
+      font-size: 0.875rem;
+      opacity: 0.9;
+      margin-top: 0.25rem;
+    }
+
+    .dashboard-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1.5rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: #6b7280;
+      font-weight: 600;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-top: 0.5rem;
+    }
+
+    .stat-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.5rem;
+    }
+
+    .stat-icon.orange {
+      background: rgba(249, 115, 22, 0.1);
+      color: #f97316;
+    }
+
+    .stat-icon.green {
+      background: rgba(34, 197, 94, 0.1);
+      color: #22c55e;
+    }
+
+    .stat-icon.blue {
+      background: rgba(59, 130, 246, 0.1);
+      color: #3b82f6;
+    }
+
+    .stat-icon.purple {
+      background: rgba(168, 85, 247, 0.1);
+      color: #a855f7;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .tab-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: white;
+      color: #1f2937;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, #f97316, #dc2626);
+      color: white;
+      box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      background: #f9fafb;
+      padding: 0.75rem;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: #374151;
+      border-bottom: 2px solid #e5e7eb;
+    }
+
+    td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #e5e7eb;
+      font-size: 0.875rem;
+      color: #1f2937;
+    }
+
+    tr:hover {
+      background: #f9fafb;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 1rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .badge-warning {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .badge-danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #6b7280;
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .empty-text {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .btn-action {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-edit {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .btn-edit:hover {
+      background: #bfdbfe;
+    }
+
+    .btn-delete {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .btn-delete:hover {
+      background: #fecaca;
+    }
+
+    .search-box {
+      margin-bottom: 1rem;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 10000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: 1rem;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 2px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1f2937;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-close {
+      width: 2rem;
+      height: 2rem;
+      border: none;
+      background: #f3f4f6;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.25rem;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      background: #e5e7eb;
+      transform: rotate(90deg);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    .modal-footer {
+      padding: 1.5rem;
+      border-top: 2px solid #e5e7eb;
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .modal-footer .btn {
+      flex: 1;
+      margin: 0;
+    }
+
+    .search-box input {
+      width: 100%;
+      max-width: 400px;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+    }
+
+    .search-box input:focus {
+      outline: none;
+      border-color: #f97316;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .dashboard-header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .tabs {
+        flex-direction: column;
+      }
+
+      .tab-btn {
+        width: 100%;
+      }
+
+      table {
+        font-size: 0.75rem;
+      }
+
+      th, td {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Login Screen -->
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <div class="logo-container">
+        <div class="logo-icon">🛡️</div>
+        <div class="logo-title">TAXOL</div>
+        <div class="logo-subtitle">Admin Control Panel</div>
+      </div>
+
+      <h2 class="login-title">Login Admin</h2>
+
+      <div class="input-group">
+        <label class="input-label">Username</label>
+        <div class="input-wrapper">
+          <span class="input-icon">👤</span>
+          <input type="text" id="username" class="input-field" placeholder="Masukkan username">
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label class="input-label">Password</label>
+        <div class="input-wrapper">
+          <span class="input-icon">🔒</span>
+          <input type="password" id="password" class="input-field" placeholder="Masukkan password">
+        </div>
+      </div>
+
+      <button class="btn btn-primary" onclick="handleLogin()">
+        <span>🔐</span>
+        <span>Login</span>
+      </button>
+
+      <button class="btn btn-secondary" onclick="window.location.href='index.html'">
+        <span>🏠</span>
+        <span>Kembali ke Beranda</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Dashboard Screen -->
+  <div id="dashboardScreen" class="dashboard-screen hidden">
+    <div class="dashboard-header">
+      <div class="dashboard-header-content">
+        <div>
+          <div class="dashboard-title">🛡️ TAXOL Admin Panel</div>
+          <div class="dashboard-subtitle">Kelola sistem dan monitoring data</div>
+        </div>
+        <button class="btn btn-secondary" style="width: auto; margin: 0; color: white; border-color: rgba(255,255,255,0.3);" onclick="handleLogout()">
+          <span>🚪</span>
+          <span>Logout</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="dashboard-content">
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <div>
+              <div class="stat-label">Total Driver</div>
+              <div class="stat-value" id="totalDrivers">0</div>
+            </div>
+            <div class="stat-icon orange">🚗</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div>
+              <div class="stat-label">Total Trips</div>
+              <div class="stat-value" id="totalTrips">0</div>
+            </div>
+            <div class="stat-icon blue">📋</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div>
+              <div class="stat-label">Pendapatan Total</div>
+              <div class="stat-value" id="totalRevenue">Rp 0</div>
+            </div>
+            <div class="stat-icon green">💰</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <div>
+              <div class="stat-label">Driver Aktif</div>
+              <div class="stat-value" id="activeDrivers">0</div>
+            </div>
+            <div class="stat-icon purple">✅</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('drivers')">
+          <span>🚗</span> Kelola Driver
+        </button>
+        <button class="tab-btn" onclick="switchTab('trips')">
+          <span>📋</span> Data Trips
+        </button>
+        <button class="tab-btn" onclick="switchTab('reports')">
+          <span>📊</span> Laporan
+        </button>
+      </div>
+
+      <!-- Driver Tab -->
+      <div id="driversTab" class="tab-content active">
+        <div class="card">
+          <h2 class="card-title">
+            <span>🚗</span>
+            <span>Daftar Driver Terdaftar</span>
+          </h2>
+
+          <div class="search-box">
+            <input type="text" id="searchDriver" placeholder="🔍 Cari driver berdasarkan nama, email, atau nomor telepon..." onkeyup="filterDrivers()">
+          </div>
+
+          <div class="table-wrapper">
+            <table id="driversTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Nama Lengkap</th>
+                  <th>Email</th>
+                  <th>Telepon</th>
+                  <th>Kendaraan</th>
+                  <th>Plat Nomor</th>
+                  <th>Status</th>
+                  <th>Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="driversTableBody">
+                <tr>
+                  <td colspan="8">
+                    <div class="empty-state">
+                      <div class="empty-icon">⏳</div>
+                      <div class="empty-text">Memuat data...</div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trips Tab -->
+      <div id="tripsTab" class="tab-content">
+        <div class="card">
+          <h2 class="card-title">
+            <span>📋</span>
+            <span>Data Perjalanan (Trips)</span>
+          </h2>
+
+          <div class="search-box">
+            <input type="text" id="searchTrip" placeholder="🔍 Cari trip berdasarkan nama customer atau lokasi..." onkeyup="filterTrips()">
+          </div>
+
+          <div class="table-wrapper">
+            <table id="tripsTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Customer</th>
+                  <th>Pickup</th>
+                  <th>Tujuan</th>
+                  <th>Layanan</th>
+                  <th>Jarak</th>
+                  <th>Durasi</th>
+                  <th>Harga</th>
+                  <th>Pembayaran</th>
+                  <th>Tanggal</th>
+                </tr>
+              </thead>
+              <tbody id="tripsTableBody">
+                <tr>
+                  <td colspan="10">
+                    <div class="empty-state">
+                      <div class="empty-icon">⏳</div>
+                      <div class="empty-text">Memuat data...</div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reports Tab -->
+      <div id="reportsTab" class="tab-content">
+        <div class="card">
+          <h2 class="card-title">
+            <span>📊</span>
+            <span>Laporan & Statistik</span>
+          </h2>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+            <div style="background: #f9fafb; padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid #f97316;">
+              <h3 style="font-size: 1rem; color: #6b7280; margin-bottom: 0.5rem;">Layanan Terpopuler</h3>
+              <p style="font-size: 1.5rem; font-weight: 700; color: #1f2937;" id="popularService">-</p>
+            </div>
+
+            <div style="background: #f9fafb; padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid #22c55e;">
+              <h3 style="font-size: 1rem; color: #6b7280; margin-bottom: 0.5rem;">Rata-rata Jarak Trip</h3>
+              <p style="font-size: 1.5rem; font-weight: 700; color: #1f2937;" id="avgDistance">-</p>
+            </div>
+
+            <div style="background: #f9fafb; padding: 1.5rem; border-radius: 0.75rem; border-left: 4px solid #3b82f6;">
+              <h3 style="font-size: 1rem; color: #6b7280; margin-bottom: 0.5rem;">Metode Bayar Favorit</h3>
+              <p style="font-size: 1.5rem; font-weight: 700; color: #1f2937;" id="favPayment">-</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- Edit Driver Modal -->
+  <div id="editDriverModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <span>✏️</span>
+          <span>Edit Data Driver</span>
+        </h3>
+        <button class="modal-close" onclick="closeEditModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="editDriverId">
+        
+        <div class="input-group">
+          <label class="input-label">Nama Lengkap</label>
+          <input type="text" id="editFullName" class="input-field" placeholder="Nama lengkap driver">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Email</label>
+          <input type="email" id="editEmail" class="input-field" placeholder="Email driver">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Nomor Telepon</label>
+          <input type="tel" id="editPhone" class="input-field" placeholder="Nomor telepon">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Jenis Kendaraan</label>
+          <select id="editVehicleType" class="input-field" style="padding-left: 1rem;">
+            <option value="Regular">Regular</option>
+            <option value="XL">XL</option>
+            <option value="Premium">Premium</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Plat Nomor</label>
+          <input type="text" id="editPlateNumber" class="input-field" placeholder="Plat nomor kendaraan">
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Alamat</label>
+          <textarea id="editAddress" class="input-field" rows="3" placeholder="Alamat lengkap" style="padding-left: 1rem; resize: vertical;"></textarea>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label">Status</label>
+          <select id="editStatus" class="input-field" style="padding-left: 1rem;">
+            <option value="aktif">✅ Aktif</option>
+            <option value="nonaktif">❌ Nonaktif</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeEditModal()">
+          <span>❌</span>
+          <span>Batal</span>
+        </button>
+        <button class="btn btn-primary" onclick="saveDriverEdit()">
+          <span>💾</span>
+          <span>Simpan Perubahan</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <script>
+    let driversData = [];
+    let tripsData = [];
+    
+
+    // Login Handler
+    async function handleLogin() {
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      if (!username || !password) {
+        alert('❌ Username dan password wajib diisi!');
+        return;
+      }
+
+      try {
+        const res = await fetch('http://127.0.0.1:5000/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username, password })
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+          alert('✅ ' + result.message);
+          showDashboard();
+        } else {
+          alert('❌ ' + result.error);
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        alert('❌ Gagal terhubung ke server. Pastikan server Flask berjalan!');
+      }
+    }
+
+    // Logout Handler
+    function handleLogout() {
+      if (confirm('Yakin ingin logout?')) {
+        hideDashboard();
+      }
+    }
+
+    // Show Dashboard
+    function showDashboard() {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('dashboardScreen').classList.remove('hidden');
+      loadDashboardData();
+    }
+
+    // Hide Dashboard
+    function hideDashboard() {
+      document.getElementById('loginScreen').classList.remove('hidden');
+      document.getElementById('dashboardScreen').classList.add('hidden');
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+    }
+
+    // Load Dashboard Data
+    async function loadDashboardData() {
+      await loadDrivers();
+      await loadTrips();
+      updateStats();
+      updateReports();
+    }
+
+    // Load Drivers
+    async function loadDrivers() {
+      try {
+        const res = await fetch('http://127.0.0.1:5000/admin/drivers');
+        driversData = await res.json();
+
+        const tbody = document.getElementById('driversTableBody');
+
+        if (driversData.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="8">
+                <div class="empty-state">
+                  <div class="empty-icon">📭</div>
+                  <div class="empty-text">Belum ada driver terdaftar</div>
+                </div>
+              </td>
+            </tr>
+          `;
+        } else {
+          tbody.innerHTML = '';
+          driversData.forEach(driver => {
+            const statusBadge = driver.status === 'aktif' 
+              ? '<span class="badge badge-success">✅ Aktif</span>' 
+              : '<span class="badge badge-danger">❌ Nonaktif</span>';
+
+            tbody.innerHTML += `
+              <tr>
+                <td>${driver.id}</td>
+                <td><strong>${driver.full_name}</strong></td>
+                <td>${driver.email}</td>
+                <td>${driver.phone}</td>
+                <td>${driver.vehicle_type}</td>
+                <td>${driver.plate_number}</td>
+                <td>${statusBadge}</td>
+                <td>
+                  <button class="btn-action btn-edit" onclick="editDriver(${driver.id})">✏️ Edit</button>
+                  <button class="btn-action btn-delete" onclick="deleteDriver(${driver.id})">🗑️ Hapus</button>
+                </td>
+              </tr>
+            `;
+          });
+        }
+      } catch (err) {
+        console.error('Error loading drivers:', err);
+      }
+    }
+
+    // Load Trips
+    async function loadTrips() {
+      try {
+        const res = await fetch('http://127.0.0.1:5000/admin/trips');
+        tripsData = await res.json();
+
+        const tbody = document.getElementById('tripsTableBody');
+
+        if (tripsData.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="10">
+                <div class="empty-state">
+                  <div class="empty-icon">📭</div>
+                  <div class="empty-text">Belum ada data trip</div>
+                </div>
+              </td>
+            </tr>
+          `;
+        } else {
+          tbody.innerHTML = '';
+          tripsData.forEach(trip => {
+            tbody.innerHTML += `
+              <tr>
+                <td>${trip.id}</td>
+                <td><strong>${trip.customer_name}</strong></td>
+                <td>${trip.pickup}</td>
+                <td>${trip.destination}</td>
+                <td><span class="badge badge-success">${trip.service}</span></td>
+                <td>${trip.distance} km</td>
+                <td>${trip.duration}</td>
+                <td><strong>Rp ${Number(trip.price).toLocaleString('id-ID')}</strong></td>
+                <td>${trip.payment_method}</td>
+                <td>${trip.created_at || '-'}</td>
+              </tr>
+            `;
+          });
+        }
+      } catch (err) {
+        console.error('Error loading trips:', err);
+      }
+    }
+
+    // Update Stats
+    function updateStats() {
+      document.getElementById('totalDrivers').textContent = driversData.length;
+      document.getElementById('totalTrips').textContent = tripsData.length;
+
+      const activeDrivers = driversData.filter(d => d.status === 'aktif').length;
+      document.getElementById('activeDrivers').textContent = activeDrivers;
+
+      const totalRevenue = tripsData.reduce((sum, trip) => sum + Number(trip.price), 0);
+      document.getElementById('totalRevenue').textContent = 'Rp ' + totalRevenue.toLocaleString('id-ID');
+    }
+
+    // Update Reports
+    function updateReports() {
+      // Popular Service
+      const serviceCounts = {};
+      tripsData.forEach(trip => {
+        serviceCounts[trip.service] = (serviceCounts[trip.service] || 0) + 1;
+      });
+      const popularService = Object.keys(serviceCounts).reduce((a, b) => 
+        serviceCounts[a] > serviceCounts[b] ? a : b, '-');
+      document.getElementById('popularService').textContent = popularService;
+
+      // Average Distance
+      if (tripsData.length > 0) {
+        const avgDist = tripsData.reduce((sum, trip) => sum + Number(trip.distance), 0) / tripsData.length;
+        document.getElementById('avgDistance').textContent = avgDist.toFixed(1) + ' km';
+      }
+
+      // Favorite Payment
+      const paymentCounts = {};
+      tripsData.forEach(trip => {
+        paymentCounts[trip.payment_method] = (paymentCounts[trip.payment_method] || 0) + 1;
+      });
+      const favPayment = Object.keys(paymentCounts).reduce((a, b) => 
+        paymentCounts[a] > paymentCounts[b] ? a : b, '-');
+      document.getElementById('favPayment').textContent = favPayment;
+    }
+
+    // Tab Switching
+    function switchTab(tabName) {
+      const tabs = document.querySelectorAll('.tab-btn');
+      const contents = document.querySelectorAll('.tab-content');
+
+      tabs.forEach(tab => tab.classList.remove('active'));
+      contents.forEach(content => content.classList.remove('active'));
+
+      event.target.classList.add('active');
+      document.getElementById(tabName + 'Tab').classList.add('active');
+    }
+
+    // Filter Drivers
+    function filterDrivers() {
+      const search = document.getElementById('searchDriver').value.toLowerCase();
+      const tbody = document.getElementById('driversTableBody');
+      const rows = tbody.getElementsByTagName('tr');
+
+      for (let row of rows) {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(search) ? '' : 'none';
+      }
+    }
+
+    // Filter Trips
+    function filterTrips() {
+      const search = document.getElementById('searchTrip').value.toLowerCase();
+      const tbody = document.getElementById('tripsTableBody');
+      const rows = tbody.getElementsByTagName('tr');
+
+      for (let row of rows) {
+        const text = row.textContent.toLowerCase();
+        row.style.display = text.includes(search) ? '' : 'none';
+      }
+    }
+
+    // Edit Driver
+    function editDriver(id) {
+  const driver = driversData.find(d => d.id === id);
+  if (!driver) return;
+
+  document.getElementById('editDriverId').value = driver.id;
+  document.getElementById('editFullName').value = driver.full_name;
+  document.getElementById('editEmail').value = driver.email;
+  document.getElementById('editPhone').value = driver.phone;
+  document.getElementById('editVehicleType').value = driver.vehicle_type;
+  document.getElementById('editPlateNumber').value = driver.plate_number;
+  document.getElementById('editAddress').value = driver.address;
+  document.getElementById('editStatus').value = driver.status;
+
+  document.getElementById('editDriverModal').classList.add('active');
+}
+
+function closeEditModal() {
+  document.getElementById('editDriverModal').classList.remove('active');
+}
+
+async function saveDriverEdit() {
+  const id = document.getElementById('editDriverId').value;
+  const data = {
+    full_name: document.getElementById('editFullName').value,
+    email: document.getElementById('editEmail').value,
+    phone: document.getElementById('editPhone').value,
+    vehicle_type: document.getElementById('editVehicleType').value,
+    plate_number: document.getElementById('editPlateNumber').value,
+    address: document.getElementById('editAddress').value,
+    status: document.getElementById('editStatus').value
+  };
+
+  if (!data.full_name || !data.email || !data.phone) {
+    alert('❌ Nama, email, dan nomor telepon wajib diisi!');
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://127.0.0.1:5000/admin/drivers/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+      alert('✅ ' + result.message);
+      closeEditModal();
+      await loadDrivers();
+      updateStats();
+    } else {
+      alert('❌ ' + result.error);
+    }
+  } catch (err) {
+    console.error('Error:', err);
+    alert('❌ Gagal mengupdate driver. Pastikan server Flask berjalan!');
+  }
+}
+
+    // Delete Driver
+    async function deleteDriver(id) {
+  const driver = driversData.find(d => d.id === id);
+  if (!driver) return;
+
+  if (!confirm(`⚠️ PERHATIAN!\n\nYakin ingin menghapus driver:\n${driver.full_name}\n\nData yang dihapus tidak dapat dikembalikan!`)) {
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://127.0.0.1:5000/admin/drivers/${id}`, {
+      method: 'DELETE'
+    });
+
+    const result = await res.json();
+
+    if (res.ok) {
+      alert('✅ ' + result.message);
+      await loadDrivers();
+      updateStats();
+    } else {
+      alert('❌ ' + result.error);
+    }
+  } catch (err) {
+    console.error('Error:', err);
+    alert('❌ Gagal menghapus driver. Pastikan server Flask berjalan!');
+  }
+}
+
+    // Keyboard shortcut (Enter untuk login)
+    document.getElementById('password').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        handleLogin();
+      }
+    });
+  </script>
+</body>
+</html>
