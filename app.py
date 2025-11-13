@@ -206,6 +206,53 @@ def admin_trips():
     rows = db.execute("SELECT * FROM trips ORDER BY id DESC").fetchall()
     return jsonify([dict(r) for r in rows])
 
+# ======================
+# 🔧 UPDATE DRIVER (Admin)
+# ======================
+@app.route('/admin/drivers/<int:driver_id>', methods=['PUT'])
+def update_driver(driver_id):
+    data = request.get_json() or {}
+    
+    db = get_db()
+    
+    try:
+        db.execute("""
+            UPDATE drivers 
+            SET full_name = ?, email = ?, phone = ?, 
+                vehicle_type = ?, plate_number = ?, address = ?, status = ?
+            WHERE id = ?
+        """, (
+            data.get('full_name'),
+            data.get('email'),
+            data.get('phone'),
+            data.get('vehicle_type'),
+            data.get('plate_number'),
+            data.get('address'),
+            data.get('status', 'aktif'),
+            driver_id
+        ))
+        db.commit()
+        return jsonify({"message": "✅ Data driver berhasil diupdate"})
+    except sqlite3.IntegrityError:
+        return jsonify({"error": "Nomor telepon sudah digunakan driver lain"}), 400
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+# ======================
+# 🗑️ DELETE DRIVER (Admin)
+# ======================
+@app.route('/admin/drivers/<int:driver_id>', methods=['DELETE'])
+def delete_driver(driver_id):
+    db = get_db()
+    
+    try:
+        db.execute("DELETE FROM drivers WHERE id = ?", (driver_id,))
+        db.commit()
+        return jsonify({"message": "✅ Driver berhasil dihapus"})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
 
 # ======================
 # 🌐 FRONTEND
@@ -230,9 +277,5 @@ def serve_frontend(path):
 # ======================
 if __name__ == '__main__':
     init_db()
-    print("✅ Server TAXOL aktif")
-    import os
-    port = int(os.environ.get("PORT", 5000))
-    # debug=False di production
-    app.run(host='0.0.0.0', port=port, debug=False)
-
+    print("✅ Server TAXOL aktif di http://127.0.0.1:5000")
+    app.run(host='0.0.0.0', port=5000, debug=True)
